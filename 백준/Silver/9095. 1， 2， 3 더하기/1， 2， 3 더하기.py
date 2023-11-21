@@ -5,7 +5,6 @@ case = int(input().rstrip())
 
 for i in range(case):
     result = [0] * 11
-    result[0] = 0
     num = int(input().rstrip())
     for j in range(1,num+1):
         for k in range(1,4):
