@@ -23,18 +23,13 @@ def bfs(road, startCity):
 
 bfs(road,startCity)
 
-isZero = False 
-
 answer = []
 for i in range(1,cityNum+1): 
     if distanceList[i] == distance:
         #print(i,distanceList[i]) 
         answer.append(i)
-
-if len(answer) == 0: 
-    isZero = True
     
-if isZero:
+if len(answer)==0:
     print(-1) 
 else: 
     answer.sort()
