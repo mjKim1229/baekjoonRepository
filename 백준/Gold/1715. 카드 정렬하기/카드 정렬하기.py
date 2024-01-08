@@ -5,17 +5,16 @@ import heapq
 n = int(input().rstrip())
 
 heap = []
-for i in range(n):
-    data = int(input())
-    heapq.heappush(heap,data)
+for _ in range(n): 
+    num = int(input().rstrip())
+    heapq.heappush(heap,num)
 
 result = 0 
-while len(heap) != 1:
+while len(heap) != 1: 
     one = heapq.heappop(heap)
     two = heapq.heappop(heap)
-    sum_value = one + two 
-    result += sum_value
-    heapq.heappush(heap,sum_value)
+    sum = one + two 
+    result += sum 
+    heapq.heappush(heap,sum)
 
 print(result)
-
