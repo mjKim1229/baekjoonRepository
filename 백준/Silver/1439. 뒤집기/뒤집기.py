@@ -10,9 +10,9 @@ countList[first] +=1
 before = first 
 
 for i in range(1,len(num)):
-    #print(before,num[i],countList)
-    if int(num[i]) != before:
-        countList[int(num[i])] +=1 
-        before = int(num[i]) 
+    now = int(num[i])
+    if now != before:
+        countList[now] +=1 
+        before = now 
 
 print(min(countList))
