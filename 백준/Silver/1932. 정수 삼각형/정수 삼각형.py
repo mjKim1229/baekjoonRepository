@@ -3,25 +3,24 @@ input = sys.stdin.readline
 
 n = int(input().rstrip())
 
-array = []
+dp = []
 for _ in range(n):
     row = list(map(int,input().rstrip().split())) 
-    array.append(row)
+    dp.append(row)
 
-
-dp = [ [0] * n for _ in range(n) ] 
-
-dp[0][0] = array[0][0]
-
+# 2,1 => 1,0 / 1,1 
 for i in range(1,n):
     for j in range(i+1):
-        dy = j -1 
-        if 0<= dy <i: 
-            dp[i][j] = max(dp[i][j], dp[i-1][dy] + array[i][j])
-        dy = j 
-        if 0<= dy < i: 
-            dp[i][j] = max(dp[i][j], dp[i-1][dy] + array[i][j])
-
-
+        #왼쪽 위 
+        if j ==0: 
+            up_left = 0 
+        else: 
+            up_left = dp[i-1][j-1]
+        #바로 위에서 내려오는 경우 
+        if j == i:
+            up = 0 
+        else: 
+            up = dp[i-1][j] 
+        dp[i][j] = dp[i][j] + max(up_left,up)
 
 print(max(dp[n-1]))
