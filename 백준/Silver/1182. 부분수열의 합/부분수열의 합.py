@@ -6,16 +6,20 @@ n, s = map(int, input().rstrip().split())
 numList = list(map(int,input().rstrip().split()))
 
 cnt = 0 
-ans = []
-def solve(start): 
+
+def subset_sum(idx,sub_sum):
     global cnt 
-    if sum(ans) == s and len(ans) >0:
+
+    if idx >= n: 
+        return 
+    
+    sub_sum += numList[idx]
+
+    if sub_sum == s: 
         cnt +=1 
+    
+    subset_sum(idx+1,sub_sum)
+    subset_sum(idx+1,sub_sum-numList[idx])
 
-    for i in range(start,n): 
-        ans.append(numList[i])
-        solve(i+1)
-        ans.pop() 
-
-solve(0)
+subset_sum(0,0)
 print(cnt)
