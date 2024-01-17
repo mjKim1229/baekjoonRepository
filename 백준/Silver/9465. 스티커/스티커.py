@@ -29,4 +29,5 @@ for _ in range(int(input().rstrip())):
                 if 0<= j-2: 
                     dp[i][j] = max(dp[i][j], dp[i-1][j-2] + graph[i][j] ) 
     
+  
     print(max(dp[0][-1], dp[1][-1]))
