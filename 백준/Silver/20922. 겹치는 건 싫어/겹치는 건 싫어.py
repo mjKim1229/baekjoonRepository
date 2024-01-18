@@ -7,23 +7,16 @@ n, k = map(int, input().rstrip().split())
 array = list(  map(int, input().rstrip().split()) )
 index = defaultdict(int)
 
-maxLength = 0 
-end = 1
-subLength = 1
+answer = 0 
+left, right = 0, 0 
 
-index[array[0]] +=1 
-for start in range(n):
-    #print(start,end,subLength)
-    while end < n:
-        now = array[end]
-        if index[now] == k: 
-            break 
-        end += 1 
-        subLength +=1 
-        index[now] +=1   
-    
-    maxLength = max(maxLength, subLength)
-    subLength -= 1 
-    index[array[start]] -=1 
+while right < n:
+    if index[array[right]] < k: 
+        index[array[right]] +=1 
+        right +=1 
+    else: 
+        index[array[left]] -= 1 
+        left +=1 
+    answer = max(answer,right-left)
 
-print(maxLength)
+print(answer)
