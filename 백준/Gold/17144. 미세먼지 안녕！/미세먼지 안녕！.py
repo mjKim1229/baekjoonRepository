@@ -47,9 +47,7 @@ for _ in range(t):
         if 0<=tempX<r and 0<= tempY <c: 
             if graph[tempX][tempY] == -1:
                 break 
-            forNextValue = graph[tempX][tempY]
-            graph[tempX][tempY] = beforeVaue
-            beforeVaue = forNextValue
+            graph[tempX][tempY], beforeVaue = beforeVaue, graph[tempX][tempY]
             nowX, nowY = tempX, tempY
         else: 
             dir = (dir - 1) % 4 
@@ -66,9 +64,7 @@ for _ in range(t):
         if 0<=tempX<r and 0<= tempY <c: 
             if graph[tempX][tempY] == -1:
                 break 
-            forNextValue = graph[tempX][tempY]
-            graph[tempX][tempY] = beforeVaue
-            beforeVaue = forNextValue
+            graph[tempX][tempY], beforeVaue = beforeVaue, graph[tempX][tempY]
             nowX, nowY = tempX, tempY
         else: 
             dir = (dir + 1) % 4 
