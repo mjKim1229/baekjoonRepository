@@ -6,9 +6,7 @@ def bfs(target,visited):
     tempMaxDepth = 0 
     visited[target] = True 
     q = deque()
-    for friend in friends[target]:
-        visited[friend] = True  
-        q.append( (friend, 1) )
+    q.append((target, 0))
     while q: 
         friend, depth = q.popleft()
         tempMaxDepth = max(depth, tempMaxDepth)
