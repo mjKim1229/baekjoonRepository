@@ -5,22 +5,24 @@ def dfs(s,e,distance):
     #print("check",s,e,distance)
     global answer 
     visited[s] = True 
-    for i in range(1,n+1):
-        if graph[s][i] > 0 and not visited[i]:
-            if i == e:
-                answer = distance + graph[s][i]
+    for i in graph[s]:
+        node = i[0]
+        nowDistance = i[1]
+        if not visited[node]:
+            if node == e:
+                answer = distance + nowDistance
             else: 
-                dfs(i, e, distance + graph[s][i]) 
+                dfs(node, e, distance + nowDistance) 
 
 
 n, m = map(int, input().rstrip().split())
 
-graph = [ [0] * (n+1) for _ in range(n+1)]
+graph = [ [] for _ in range(n+1)]
 
 for _ in range(n-1):
     a, b, d = map(int, input().rstrip().split())    
-    graph[a][b] = d 
-    graph[b][a] = d 
+    graph[a].append((b,d)) 
+    graph[b].append((a,d))
 
 for _ in range(m):
     a , b = map(int, input().rstrip().split())
