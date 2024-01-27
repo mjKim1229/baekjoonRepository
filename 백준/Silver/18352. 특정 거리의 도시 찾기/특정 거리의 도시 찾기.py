@@ -1,37 +1,36 @@
-import sys  
-input = sys.stdin.readline
+import sys 
+input = sys.stdin.readline 
 from collections import deque
 
-cityNum, roadNum, distance, startCity = map(int,input().rstrip().split())
-road = [[] for _ in range(cityNum+1)]
-distanceList = [-1] * (cityNum+1)
+def bfs(x):
+    visited[x] = True 
+    q = deque()
+    q.append(x)
+    while q: 
+        x = q.popleft()
+        for i in graph[x]:
+            if not visited[i]:
+                visited[i] = True 
+                distance[i] = distance[x] + 1 
+                q.append(i)
 
-for _ in range(roadNum): 
-    start, end = map(int,input().rstrip().split())
-    road[start].append(end)
+n, m , k, x = map(int, input().rstrip().split())
+graph = [ [] for _ in range(n+1)]
 
-def bfs(road, startCity):
-    queue = deque([startCity])
-    distanceList[startCity] = 0 
-    while queue: 
-        city = queue.popleft()
-        #print(city,distanceList[city])
-        for i in road[city]: 
-            if distanceList[i] == -1: 
-                distanceList[i] = distanceList[city] +1 
-                queue.append(i)
+for _ in range(m):
+    a, b = map(int, input().rstrip().split())
+    graph[a].append(b)
 
-bfs(road,startCity)
+visited = [False] * (n+1)
+distance = [0] * (n+1)
+bfs(x)
 
-answer = []
-for i in range(1,cityNum+1): 
-    if distanceList[i] == distance:
-        #print(i,distanceList[i]) 
-        answer.append(i)
-    
-if len(answer)==0:
-    print(-1) 
-else: 
-    answer.sort()
-    for i in answer: 
+
+isNone = True  
+for i in range(len(distance)):
+    if distance[i] == k: 
         print(i)
+        isNone = False 
+
+if isNone:
+    print(-1)
