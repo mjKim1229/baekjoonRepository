@@ -1,46 +1,34 @@
-from collections import deque
 import sys 
-input = sys.stdin.readline
-result =[]
+input = sys.stdin.readline 
+from collections import deque
 
-testCase = int(input().rstrip()) 
-for _ in range(testCase):
-    queue = []
-    number , target = map(int,input().rstrip().split())
-    #우선순위 입력 
-    priority = list(map(int,input().rstrip().split()))
-    #print(priority)
+
+for _ in range(int(input().rstrip())):
+    n, m = map(int, input().rstrip().split())
+    priorityList =list(map(int, input().rstrip().split())) 
     
-    #큐에 삽입 
-    for i in range(len(priority)):
-        #print(priority[i],i)
-        queue.append((priority[i],i))
+    queue = deque()
+    for i in range(n):
+        queue.append((priorityList[i],i))
 
-  
+
     count = 1 
-    
-    #조회 
-    while True:
-        nowPriority,nowIndex = queue.pop(0)
-        maxPriority = max(priority)
-        #print("뽑은거",nowPriority,nowIndex,maxPriority)
+    while True: 
+        nowPriority, nowIndex = queue.popleft()
+        maxPriority = max(priorityList)
+        #제일 큰 게 있으면 뒤로 
         if nowPriority < maxPriority:
-            #print("뒤로")
-            queue.append((nowPriority,nowIndex)) 
+            queue.append((nowPriority,nowIndex))
+        #내가 빠짐 
         else: 
-            if nowIndex == target:
-                #print("끝")
-                #print(count)
+            if nowIndex == m:
+                print(count)
                 break 
             else:
-                #print("그냥 제거")
-                priority.remove(maxPriority)
+                priorityList.remove(nowPriority)
                 count +=1 
-    result.append(count)
 
-for i in result:
-    print(i)
+            
 
-        
     
-    
+
