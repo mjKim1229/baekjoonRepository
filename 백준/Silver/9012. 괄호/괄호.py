@@ -3,30 +3,19 @@ input = sys.stdin.readline
 
 n = int(input().rstrip())
 
-
-
-
-for k in range(n):
+for _ in range(n):
+    array = input().rstrip()
     stack = []
-    finish = False
-    #print(k)
-    ps = input().rstrip()
-    for i in ps:
-        #print(stack)
-        if i == "(":
-            stack.append(i)
-        else:
-            if len(stack) == 0: 
-                print("NO")
-                finish = True
-                break
-            else:
-                stack.pop()
     
-    if not finish:
-        #print("stack",stack)
-        if len(stack)==0:
-            print("YES")
-        else:
-            print("NO")
-        
+    for ch in array:
+        if not stack:
+            stack.append(ch)
+        else: 
+            if stack[-1]+ch == '()': 
+                stack.pop()
+            else: 
+                stack.append(ch)
+    if stack:
+        print("NO")
+    else: 
+        print("YES")
