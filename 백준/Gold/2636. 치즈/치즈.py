@@ -1,48 +1,48 @@
-import sys
+import sys 
+input = sys.stdin.readline 
 from collections import deque
-input = sys.stdin.readline
 
+n, m = map(int, input().rstrip().split())
+graph = [ list(map(int, input().rstrip().split())) for _ in range(n)]
 dx = [0,1,0,-1]
 dy = [1,0,-1,0]
 
-def bfs(visited):
-    cnt = 0 
-    global dx, dy 
+def bfs(graph, visited):
+    nowDelete = 0 
+    afterDelete = 0  
     q = deque()
     q.append((0,0))
     visited[0][0] = True 
     while q: 
         x, y = q.popleft()
         for i in range(4):
-            tempX = x + dx[i]
-            tempY = y + dy[i]
-            if 0<= tempX <n and 0<= tempY <m and not visited[tempX][tempY]:
-                if graph[tempX][tempY] == 0:
-                    q.append((tempX,tempY))
-                    visited[tempX][tempY] = True
-                elif graph[tempX][tempY] == 1: 
-                    visited[tempX][tempY] = True 
-                    graph[tempX][tempY] = 0
-                    cnt += 1 
-    return cnt 
+            xx = x + dx[i]
+            yy = y + dy[i]
+            if 0<= xx <n and 0<= yy <m and not visited[xx][yy]:
+                visited[xx][yy] = True 
+                if graph[xx][yy] == 0:
+                    q.append((xx,yy))
+                else: 
+                    graph[xx][yy] = 2 
 
+    for i in range(n):
+        for j in range(m):
+            #없어질 치즈 공기로 바꿈 
+            if graph[i][j] == 2:
+                graph[i][j] = 0 
+                nowDelete += 1  
+            elif graph[i][j] == 1:
+                afterDelete +=1 
+    #print(nowDelete, afterDelete)
+    return nowDelete, afterDelete
 
-n, m = map(int, input().rstrip().split())
-graph = []
-for _ in range(n):
-    row = list(map(int, input().rstrip().split()))
-    graph.append(row)
-
-
+    
 time = 0 
-answer = []
 while True: 
     time +=1 
-    visited =[[False] * m for _ in range(n)]
-    cnt = bfs(visited)
-    if cnt == 0:
+    visited =[[False] * m for _ in range(n) ]
+    nowDelete, afterDelete = bfs(graph, visited)
+    if afterDelete == 0:
+        print(time)
+        print(nowDelete)
         break 
-    answer.append(cnt)
-
-print(time-1)
-print(answer[-1])
