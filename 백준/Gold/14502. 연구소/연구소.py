@@ -1,61 +1,69 @@
-import sys 
-input = sys.stdin.readline 
-from collections import deque
+#연구소 N X M 
+# 벽 3개 
+#0: 빈칸, 1: 벽 , 2: 바이러스 
+import sys ,copy
+input = sys.stdin.readline
+from collections import deque, Counter 
 from itertools import combinations
-import copy
-#0: 빈칸 , 1: 벽 2: 바이러스 
+
 n, m = map(int, input().rstrip().split())
 graph = [list(map(int, input().rstrip().split())) for _ in range(n)]
 
-#virus 저장 
-virus = [(x,y) for x in range(n) for y in range(m) if graph[x][y] == 2]
-blanks = [(x,y) for x in range(n) for y in range(m) if graph[x][y] ==0]
+wallCanLoc = [(x,y) for x in range(n) for y in range(m) if graph[x][y] == 0]
+viruses = [(x,y) for x in range(n) for y in range(m) if graph[x][y] == 2]
 
-wallcombi = list(combinations(blanks,3)) 
+combi = list(combinations(wallCanLoc,3)) 
 dx = [0,1,0,-1]
 dy = [1,0,-1,0]
-answer = 0 
 
-for pick in wallcombi:
-    
-    #안전 영역 
-    safeCount = 0 
-    #temp로 바이러스 전파 
-    temp = copy.deepcopy(graph)
-    visited = [[False] * m for _ in range(n)]
-    
-    #벽 세우기 
-    for x, y in pick:
-        temp[x][y] = 1 
-    
-    #초기 바이러스 
+def bfs(x,y):
     q = deque()
-    for x, y in virus:
-        q.append((x,y))
-        visited[x][y] = True 
+    #초기 처리 
+    visited[x][y] = True
+    q.append((x,y))
 
-    #bfs 
-    while q: 
-        x, y = q.popleft()
+    while q:
+        x,y = q.popleft()
         for i in range(4):
             xx = x + dx[i]
             yy = y + dy[i]
-            if 0<=xx<n and 0<=yy<m and not visited[xx][yy]:
-                #벽 말고 빈칸, 바이러스는 확산 가능 
-                if temp[xx][yy] != 1:
-                    visited[xx][yy] = True
-                    temp[xx][yy] = 2
-                    q.append((xx,yy))
+            if xx<0 or xx>=n or yy<0 or yy>=m:
+                continue
+            if visited[xx][yy]:
+                continue
+            #벽이면 
+            if new_graph[xx][yy] == 1:
+                visited[xx][yy] = True
+                continue
+            else: 
+                visited[xx][yy] = True
+                new_graph[xx][yy] = 2 
+                q.append((xx,yy))
+
+answer = 0 
+for walls in combi:
+    new_graph = copy.deepcopy(graph)
+    #벽 세우기 
+    for x,y in walls:
+        new_graph[x][y] = 1
     
-    #안전지대 count 
-    for i in range(n):
-        for j in range(m):
-            if temp[i][j] == 0:
-                safeCount +=1 
-    answer = max(answer, safeCount)
-  
-    #벽 원상태로 
-    for x,y in pick:
-        temp[x][y] = 0 
+    #방문 
+    visited = [[False] * m for _ in range(n)]
+
+    #바이러스 출발점 마다 확산
+    for virus in viruses:
+        x,y = virus
+        bfs(x,y) 
+   
+    tmpAnswer = 0 
+    for x in range(n):
+        for y in range(m):
+            if new_graph[x][y] ==0:
+                tmpAnswer += 1 
+    answer = max(answer, tmpAnswer)
+
+    #벽 철거 
+    for x,y in walls:
+        new_graph[x][y] = 0 
 
 print(answer)
