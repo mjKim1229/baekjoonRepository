@@ -54,18 +54,21 @@ def checkDuplicate(firstStar, secondStar):
     temp = [[False] * m for _ in range(n)]
     fx, fy, fLength = firstStar
     sx, sy, sLength = secondStar
-   
+  
     #첫번째 spread 
     for length in range(fLength+1):
         spread(fx,fy,length,temp)
-    
+        
+
     for length in range(sLength+1):
         if spread(sx,sy,length,temp):
             continue 
         else: 
-            return None
-    
-    return ( (fLength*4+1) * (sLength*4+1) )
+            return False
+        
+    return True
+   
+       
 
 #격자판 받기 
 n, m = map(int, input().rstrip().split())
@@ -83,9 +86,11 @@ for x,y in starLoc:
 
 
 for firstStar, secondStar in combinations(canStar,2):
-    tempMul = checkDuplicate(firstStar,secondStar) 
-    if tempMul != None:
-        answer = max(answer,tempMul)
+    tempMul = (firstStar[2]*4 +1) * (secondStar[2]*4+1)
+    if tempMul > answer:
+        if checkDuplicate(firstStar,secondStar):
+            answer = tempMul
+   
 
 print(answer)
 
