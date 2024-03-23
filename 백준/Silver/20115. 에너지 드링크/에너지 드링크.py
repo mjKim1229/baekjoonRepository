@@ -1,18 +1,13 @@
+#여러개의 에너지 드링크들을 하나로 
+#2개 pick => 한쪽으로 => 절반 흘림 => 남은 드링크 버림 => 하나만 남을 때까지 반복 
 import sys 
 input = sys.stdin.readline 
 
-n = int(input())
-drinkList = list(map(int,input().split())) 
-totalAmount = 0 
+n = int(input().rstrip())
+array = list(map(int, input().rstrip().split()))
+array.sort()
 
-drinkList.sort(reverse=True)
-totalAmount +=  drinkList[0]
-
-remain = sum(drinkList[1:])
-
-if(remain%2==0):
-  totalAmount += remain//2
-else:
-  totalAmount += remain/2
-
-print(totalAmount)
+answer = array[-1]
+for i in range(n-1):
+    answer += (array[i]/2)
+print(answer)
