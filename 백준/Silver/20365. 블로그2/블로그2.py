@@ -1,34 +1,16 @@
-import sys 
+import sys
 input = sys.stdin.readline
+from collections import defaultdict
 
-n = int(input())
-colors = input()
+n = int(input().rstrip())
+array = input().rstrip()
 
-countRed=0 
-countBlue =0 
-totalCount =0 
+colorDict = {'R':0, 'B':0}
 
-for i in range(n):
-  if i ==0:
-    if colors[i] == 'R': 
-      countRed +=1 
-    else: 
-      countBlue +=1
-  else:
-    if colors[i] != colors[i-1]: 
-      if colors[i] == 'R': 
-        countRed += 1 
-      else: 
-        countBlue +=1
-    else: 
-      continue
-    
-#print(countRed,countBlue)
-if countRed > countBlue:
-  totalCount = 1+ countBlue
-elif countRed < countBlue:
-  totalCount = 1 + countRed
-else:
-  totalCount = 1 + countBlue
+colorDict[array[0]] += 1 
 
-print(totalCount)
+for i in range(n-1):
+    if array[i] != array[i+1]:
+        colorDict[array[i+1]] += 1 
+        
+print(min(colorDict['R'],colorDict['B'])+1) 
