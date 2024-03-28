@@ -18,7 +18,7 @@ titles.sort(key=lambda x:int(x[1]))
 fights = [int(input().rstrip()) for _ in range(m)]
 
 for fight in fights:
-    right = n 
+    right = n -1 
     left = 0 
     result = 0 
     while left <= right:
