@@ -1,14 +1,26 @@
 def solution(players, callings):
-    #딕셔너리 초기화 
-    rankDict = dict()
-    for i in range(len(players)): 
-        rankDict[players[i]] = i
-    for winner in callings:
-        winnerRank = rankDict[winner] 
-        rankDict[winner] -=1 
-        loser = players[winnerRank-1]
-        rankDict[loser] +=1 
-        players[winnerRank-1], players[winnerRank] = players[winnerRank],players[winnerRank-1]
-    return players
+    nameDict, numberDict = {}, {}
+    for i in range(len(players)):
+        nameDict[players[i]] = i 
+        numberDict[i] = players[i]
+
+    for backPlayer in callings: 
+        backNum = nameDict[backPlayer]
+        frontPlayer = numberDict[backNum-1]
         
+        #뒤에 있는 사람 등수 1 감소
+        nameDict[backPlayer] -= 1 
+        #앞에 있는 사람 등수 1 증가 
+        nameDict[frontPlayer] += 1
+        
+        #앞의 등수 
+        numberDict[nameDict[backPlayer]] = backPlayer 
+        #뒤의 등수 
+        numberDict[nameDict[frontPlayer]] = frontPlayer
     
+    answer = []
+    for key in numberDict.keys():
+        #print(numberDict[key])
+        answer.append(numberDict[key])
+    
+    return answer
