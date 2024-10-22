@@ -1,24 +1,29 @@
 import sys 
 input = sys.stdin.readline 
 
-n, m = map(int,input().rstrip().split())
+N, M = map(int, input().rstrip().split())
+trees = list(map(int, input().rstrip().split()))
 
-array = list(map(int,input().rstrip().split()))
 
-start = 0
-end = max(array)
+def cut_tree(height):
+    cut_sum = 0 
+    for tree in trees:
+        if tree > height: 
+            cut_sum += (tree - height)
+    return cut_sum  
 
-result = 0 
-while(start<=end):
-    mid = (start+end)//2
-    sum = 0 
-    for tree in array:
-        if tree > mid:
-            sum += (tree-mid)
-    if sum >= m: 
-        result = mid
-        start = mid + 1
-    else: 
-        end = mid-1
+start, end = 0, max(trees)
+answer = 0 
+def binary_search():
+    global answer, start, end 
+    while start <= end: 
+        mid = (start + end) // 2 
+        cut_sum = cut_tree(mid)
+        if cut_sum >= M: 
+            answer = mid 
+            start = mid + 1 
+        else: 
+            end = mid - 1 
 
-print(result)
+binary_search()
+print(answer)
