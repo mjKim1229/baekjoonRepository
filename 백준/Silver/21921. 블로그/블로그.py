@@ -1,24 +1,36 @@
 import sys 
 input = sys.stdin.readline 
 
-n, x = map(int, input().rstrip().split())
-array = list(map(int, input().rstrip().split()))
+#블로그 N일, X일 동안의 구간합 
+N, X = map(int, input().rstrip().split())
 
-dsum = [0]
-temp = 0 
-for i in array:
-    temp += i 
-    dsum.append(temp)
+visitors = list(map(int, input().rstrip().split()))
 
-answer = []
-for i in range(x,n+1):
-    tempSum = dsum[i]-dsum[i-x]
-    answer.append(tempSum)
+start, end = 0, X - 1 
+interval_sum = sum(visitors[start:end+1])
+array = [interval_sum]
+start += 1 
+end += 1 
 
-maxNum = max(answer)
+while end < N:
+    interval_sum -= visitors[start-1]
+    interval_sum += visitors[end]
+    array.append(interval_sum)
+    start += 1 
+    end += 1 
+        
+    
+    
 
-if maxNum == 0:
-    print("SAD")
-else:
-    print(maxNum)
-    print(answer.count(maxNum))
+#print(array)
+max_value = max(array)
+if max_value == 0: 
+    print('SAD')
+    exit(0)
+
+print(max_value)
+print(array.count(max_value))
+
+
+
+
