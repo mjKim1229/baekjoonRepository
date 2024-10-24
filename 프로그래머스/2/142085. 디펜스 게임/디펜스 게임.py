@@ -1,14 +1,16 @@
-import heapq 
+from heapq import heappush, heappop
 
 def solution(n, k, enemy):
-    answer, sum_enemy = 0, 0 
     q = []
-    for e in enemy: 
-        sum_enemy += e 
-        heapq.heappush(q, -e) #최대 힙으로 저장 
-        if sum_enemy > n: 
+    
+    count = 0 
+    enemy_sum = 0 
+    for e in enemy:
+        heappush(q, -e)
+        enemy_sum += e 
+        if enemy_sum > n:
             if k == 0: break 
-            sum_enemy += heapq.heappop(q)
-            k -= 1
-        answer += 1 
-    return answer 
+            enemy_sum += heappop(q)
+            k -= 1 
+        count += 1 
+    return count
