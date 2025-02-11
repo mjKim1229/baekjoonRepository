@@ -1,45 +1,44 @@
 from collections import deque
-import sys
-input = sys.stdin.readline
-INF = int(2e9)
+import sys 
+input = sys.stdin.readline 
 
-n, T = map(int, input().split())
-hole_arr = set()
-for _ in range(n) :
-    hole_arr.add(tuple(map(int, input().split())))
+n, T = map(int, input().rstrip().split())
 
-que = deque()
-que.append((0, 0, 0)) # x, y, cost
-visited = set() #방문한 노드들 담는 집합
-visited.add((0, 0))
+groove = set()
 
-#bfs
-min_cost = INF
-while que :
-    x, y, cost = que.popleft()
+#홈 데이터 초기화 
+for _ in range(n): 
+    x, y = map(int, input().rstrip().split())
+    groove.add((x,y))
 
-    #도착했으면 최소값 갱신
-    if T <= y :
-        min_cost = min(min_cost, cost)
+queue = deque()
+#x, y , cost 
+queue.append((0,0,0))
+min_cost = 1e9
+visited = set()
+visited.add((0,0))
+
+#탐색, 가능한 위치 큐에 넣기 
+def checkSurround(x, y, cost):
+    for i in range(x-2, x+3): 
+        for j in range(y-2, y+3): 
+            if (i, j) in groove and (i,j) not in visited: 
+                visited.add((i, j))
+                queue.append((i, j, cost + 1))
+
+
+while queue: 
+    x, y , cost = queue.popleft()
+
+    #끝났는지 확인, 끝났으면 더 갈 필요가 없음 
+    if y >= T:
+        min_cost = min(cost, min_cost)
         continue
+    
+    checkSurround(x, y, cost)
 
-    #도착 전이면 다음 노드 탐색 - x,y좌표의 차이가 2이하인 범위 내에 노드가 존재하면 탐색
-    for hx in range(x-2, x+3) :
-        for hy in range(y-2, y+3) :
-            if (hx, hy) in hole_arr and (hx, hy) not in visited:
-                que.append((hx, hy, cost+1))
-                visited.add((hx, hy))
+if min_cost == 1e9:
+    print(-1)
+else: 
+    print(min_cost)
 
-
-    # #도착 전이면 다음 노드 탐색 - x,y좌표의 차이가 2이하인 노드 탐색
-    # for hole in hole_arr :
-    #     h_x, h_y = hole
-    #     if abs(h_x - x) <= 2 and abs(h_y - y) <= 2 :
-    #         if hole not in visited :
-    #             que.append((h_x, h_y, cost+1))
-    #             visited.add((h_x, h_y))
-
-#목적지에 도착할 수 없는 경우
-min_cost = -1 if min_cost == INF else min_cost
-
-print(min_cost)
