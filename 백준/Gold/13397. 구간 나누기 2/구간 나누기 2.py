@@ -5,34 +5,39 @@ input = sys.stdin.readline
 N, M = map(int, input().rstrip().split())
 array = list(map(int, input().rstrip().split()))
 
+def isValid(target): 
+    low = array[0]
+    high = array[0]
+    d = 1 
+
+    for i in array:
+        #범위 내 최댓값 갱신 
+        if i > high: 
+            high = i 
+
+        if low > i: 
+            low = i 
+
+        if high - low > target: 
+            #구간 추가 
+            d += 1 
+            #중단 지점에서부터 새로 시작 
+            low = i 
+            high = i 
+
+    return M >= d 
+
 start = 0 
 end = max(array) - min(array)
 answer = end
-
-def two_pointer(target):
-    start, end, count = 0, 0, 0
-    while end < len(array):  # end가 array 길이를 넘지 않도록
-        gap = max(array[start:end+1]) - min(array[start:end+1])
-        if gap <= target:
-            end += 1
-        else:
-            count += 1
-            start = end
-            end = start
-    # 마지막 구간 처리
-    if start < len(array):
-        count += 1
-
-    return count
-
 while start <= end:
     target = (start + end) // 2
-    count = two_pointer(target)
-
-    if count > M:
-        start = target + 1
-    else:
+    
+    if isValid(target): 
+        #target을 줄인다 -> 더 많이 쪼개진다 -> M개를 넘어갈수도 있다. 
         end = target - 1
-        answer = target
-
+        answer = min(target, answer)
+    else:
+        start = target + 1
+        
 print(answer)
