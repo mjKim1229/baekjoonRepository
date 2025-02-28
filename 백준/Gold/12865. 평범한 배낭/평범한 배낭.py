@@ -1,26 +1,23 @@
 import sys
-input = sys.stdin.readline 
+input = sys.stdin.readline
 
-n, k = map(int,input().rstrip().split())
+N, K = map(int, input().rstrip().split())
+dp = [[0] * (K+1) for _ in range(N+1)]
 
-dp = [[0]*(k+1) for _ in range(n+1)]
+data = []
+for _ in range(N):
+    weight, value = map(int, input().rstrip().split())
+    data.append((weight, value))
 
-value = []
-weight = []
-
-for _ in range(n):
-    w, v = map(int,input().rstrip().split())
-    weight.append(w)
-    value.append(v)
-
-for i in range(1,n+1):
-    for j in range(1,k+1):
-        nowValue = value[i-1]
-        nowWeight = weight[i-1]
-        if nowWeight > j: 
-            dp[i][j] = dp[i-1][j]
+for index in range(1, N+1):
+    #0부터 시작이니까 index -1 
+    weight, value = data[index-1]
+    for target in range(1, K+1):
+        if weight <= target:
+            dp[index][target] = max(dp[index-1][target-weight] + value, dp[index-1][target])
         else: 
-            dp[i][j] = max(dp[i-1][j], dp[i-1][j-nowWeight]+nowValue)
+            dp[index][target] = dp[index-1][target]
 
+print(dp[N][K])
+        
 
-print(dp[n][k])
