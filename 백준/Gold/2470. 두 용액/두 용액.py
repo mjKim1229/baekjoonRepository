@@ -1,32 +1,25 @@
-import sys 
-input = sys.stdin.readline 
+import sys
+input = sys.stdin.readline
 
-n = int(input().rstrip())
-
-#[-99, -2, -1, 4, 98]
-array = list( map(int,input().rstrip().split()) ) 
-
+N = int(input().rstrip())
+array = list(map(int, input().rstrip().split()))
 array.sort()
 
-left, right = 0 , n-1  
+start, end = 0, N-1 
 
-INF = int(1e9)
-leftAnswer, rightAnswer, gap = array[left],array[right], abs(array[right]+array[left])
-
-while left < right:
-    #print(left,right)
-    tempSum = array[left] + array[right]
-    tempGap = abs(tempSum)
-    #print(tempGap)
-    if tempGap < gap: 
-        leftAnswer, rightAnswer, gap = array[left], array[right], tempGap
+answer_left, answer_right, min_value = start, end, abs(array[end] + array[start]) 
+while start < end: 
+    now = array[start] + array[end]
     
-    if tempSum > 0:
-        right -= 1 
-    elif tempSum < 0: 
-        left +=1
+    if abs(now) < min_value: 
+        answer_left, answer_right = start, end
+        min_value = abs(now)
+    
+    if now > 0: 
+        end -= 1 
+    elif now < 0: 
+        start += 1 
     else: 
-        break 
+        break
 
-print(leftAnswer,rightAnswer)
-
+print(array[answer_left], array[answer_right]) 
