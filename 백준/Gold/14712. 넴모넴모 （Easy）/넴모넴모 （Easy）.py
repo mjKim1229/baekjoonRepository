@@ -1,29 +1,41 @@
-import sys
-input = sys.stdin.readline
-N, M = map(int, input().split())
-square_map = [[0] * (M + 1) for _ in range(N + 1)]
-count = 0
+import sys 
+input = sys.stdin.readline 
 
+N, M = map(int, input().rstrip().split())
+#M, N이 최대 
+array = [[False] * (M + 1) for _ in range(N + 1)]
+
+def check_safe(x, y):
+    if not array[x-1][y] or not array[x-1][y-1] or not array[x][y-1]: 
+        return True
+    return False
+
+def get_n(x, y):
+    if y == M: 
+        nx = x + 1  
+        ny = 1
+    else: 
+        nx = x 
+        ny = y+1 
+    
+    return nx, ny 
+
+answer = 0 
 def dfs(x, y):
-    global count
-    if (x, y) == (N + 1, 1):
-        count += 1
-        return
+    global answer 
+    #오른쪽으로 이동 
+    if x == (N + 1) and y == 1: 
+        answer += 1
+        return 
+    
+    nx, ny = get_n(x,y)
 
-    if y == M:
-        nx, ny = x + 1, 1
-    else:
-        nx, ny = x, y + 1
-
-    # 현재 위치를 넣지 않는 경우
-    dfs(nx, ny)
-
-    # 현재 위치를 사용하는 경우(다만 현재 위치를 기준으로 왼쪽, 위쪽, 좌상단에 넴모가 하나라도 없어야 가능)
-    if square_map[x][y - 1] == 0 or square_map[x - 1][y] == 0 or square_map[x - 1][y - 1] == 0:
-        square_map[x][y] = 1
+    if check_safe(x,y):    
+        array[x][y] = True
         dfs(nx, ny)
-        square_map[x][y] = 0
-
+        array[x][y] = False
+     
+    dfs(nx, ny) 
+    
 dfs(1, 1)
-
-print(count)
+print(answer)
