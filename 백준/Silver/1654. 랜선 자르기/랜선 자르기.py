@@ -1,26 +1,28 @@
 import sys 
 input = sys.stdin.readline 
 
-k, n = map(int,input().rstrip().split())
-array = []
+K, N = map(int, input().rstrip().split())
+arr = []
+for _ in range(K):
+    arr.append(int(input().rstrip())) 
 
-for _ in range(k): 
-    array.append(int(input()))
+start = 1
+end = max(arr)
 
-start = 1 
-end = max(array)
-
-result = 0 
-while(start<=end):
-    mid = (start+end)//2
-    piece = 0 
-    for num in array: 
-        if num >= mid: 
-            piece += (num//mid)
-    if piece >= n: 
-        result = mid 
-        start = mid +1 
+answer = 0 
+while start <= end: 
+    mid = (start + end) // 2
+    count = 0 
+    for lan in arr:
+        count += (lan // mid)
+    if count >= N:
+        answer = mid
+        start = mid + 1
     else: 
-        end = mid -1 
+        end = mid - 1 
 
-print(result)
+print(answer)
+
+
+
+
