@@ -1,33 +1,32 @@
 import sys 
 input = sys.stdin.readline 
 
+for _ in range(int(input())):
+    N = int(input().rstrip())
+    arr = [list(map(int, input().split())) for _ in range(2)]
 
-for _ in range(int(input().rstrip())):
+    #DP 
+    dp = [[0] * N for _ in range(2)]
 
-    n = int(input().rstrip())
-    graph = []
-    for _ in range(2):
-        row = list(map(int,input().rstrip().split())) 
-        graph.append(row)
+    #0열 고정 
+    dp[0][0] = arr[0][0]
+    dp[1][0] = arr[1][0]
 
-    dp = [ [0] * n for _ in range(2)]
+    if N == 1: 
+        print(max(dp[0][0], dp[1][0]))
+        continue
 
-    dp[0][0] = graph[0][0]
-    dp[1][0] = graph[1][0]
+    #1열 고정 
+    dp[0][1] = arr[0][1] + arr[1][0]
+    dp[1][1] = arr[0][0] + arr[1][1]
+
+    if N == 2: 
+        print(max(dp[0][1], dp[1][1]))
+        continue
 
     #열 
-    for j in range(1,n):
-        for i in range(2):
-            if i == 0:
-                dp[i][j] = max(dp[i][j], dp[i+1][j-1] + graph[i][j])
-                if 0<= j-2:
-                    # print(dp[i+1][j-2])
-                    # print(dp[i][j], dp[i+1][j-2] + graph[i][j],graph[i][j] )
-                    dp[i][j] = max(dp[i][j], dp[i+1][j-2] + graph[i][j] )
-            else:
-                dp[i][j] = max(dp[i][j], dp[i-1][j-1] + graph[i][j])
-                if 0<= j-2: 
-                    dp[i][j] = max(dp[i][j], dp[i-1][j-2] + graph[i][j] ) 
-    
-  
+    for i in range(2, N):
+        dp[0][i] = arr[0][i] + max(dp[1][i-1], dp[1][i-2])
+        dp[1][i] = arr[1][i] + max(dp[0][i-1], dp[0][i-2])
+
     print(max(dp[0][-1], dp[1][-1]))
